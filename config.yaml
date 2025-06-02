@@ -1,0 +1,10 @@
+sites:
+  - name: books
+    url: https://books.toscrape.com/
+    parser: books
+    output_format: csv
+
+  # - name: quotes
+  #   url: https://quotes.toscrape.com/
+  #   parser: quotes
+  #   output_format: csv
