@@ -1,0 +1,5 @@
+scrapy
+scrapy-splash
+PyYAML
+requests
+beautifulsoup4

@@ -1,6 +1,7 @@
 # 🕷️ Web Scraper Framework (Scrapy + Configurable Sites)
 
-This project is a flexible, configuration-driven web scraping framework built using [Scrapy](https://scrapy.org/). It supports multiple websites, custom parsers, and output formats like JSON and CSV — all controlled via a single `config.yaml` file.
+A flexible and modular web scraping framework built using Python, Scrapy, and Splash for JavaScript-rendered sites. Easily configurable via a `config.yaml` file.
+
 
 ---
 
@@ -13,7 +14,7 @@ This project is a flexible, configuration-driven web scraping framework built us
 Install with:
 
 ```bash
-pip install scrapy pyyaml
+pip install -r requirements.txt
 ```
 
 ## 🧩 Configuration (config.yaml)
@@ -29,11 +30,22 @@ Each site to scrape is defined in this YAML file:
   url: https://quotes.toscrape.com/
   parser: quotes
   output: json
+
+- name: quotes
+  url: https://quotes.toscrape.com/js/
+  parser: quotes
+  output_format: json
+  output_filename: quotes.json
+  use_splash: true
 ```
 name: Output file will be named output/<name>.<output>
 
 ## 🚀 How to Run
 ```bash
+Ensure Splash is running:
+docker run -p 8050:8050 scrapinghub/splash
+
+cd webscraper
 python run_all.py
 ```
 Output files are saved in the output/ folder.

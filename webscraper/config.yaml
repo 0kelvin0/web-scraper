@@ -7,3 +7,9 @@
     url: https://quotes.toscrape.com/
     parser: quotes
     output_format: json
+
+  - name: quotes_js
+    url: http://quotes.toscrape.com/js/
+    parser: quotes_splash
+    output_format: json
+    splash: true
