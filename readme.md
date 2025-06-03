@@ -1,60 +1,67 @@
-# Multi-Site Web Scraper
+# 🕷️ Web Scraper Framework (Scrapy + Configurable Sites)
 
-A modular Python web scraping project that supports scraping multiple sites with custom parsers.  
-Easily configurable via `config.yaml` and supports output to JSON or CSV files.
-
----
-
-## Features
-
-- Supports multiple websites and parsers
-- Uses modular scraper scripts (e.g., `books.py`, `quotes.py`)
-- Default fallback parser (`generic.py`)
-- Output scraped data as JSON or CSV per site config
-- Config-driven (YAML) with easy addition of new sites
-- Basic error handling and logging
+This project is a flexible, configuration-driven web scraping framework built using [Scrapy](https://scrapy.org/). It supports multiple websites, custom parsers, and output formats like JSON and CSV — all controlled via a single `config.yaml` file.
 
 ---
 
-## Requirements
+## ⚙️ Requirements
 
 - Python 3.7+
-- See `requirements.txt` for dependencies
+- Scrapy
+- PyYAML
 
----
+Install with:
 
-## Installation
-
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
-
-   Install dependencies:
-
-2. pip install -r requirements.txt
-
-## Usage
-Edit config.yaml to add sites, URLs, parser modules, and output format (json or csv).
-
-Run the scraper:
-
-  ```bash
-    python main.py
-    Scraped data will be saved under the output/ folder, named by site and output type.
-  ```
-
-
-## How to Add a New Site
-Create a new parser in scrapers/, e.g., my_site.py with a scrape(url) function that returns a list of dictionaries.
-
-Add the site to config.yaml with:
-
-```yaml
-- name: my_site
-  url: https://example.com/
-  parser: my_site
-  output: json
+```bash
+pip install scrapy pyyaml
 ```
 
-Run python main.py to scrape and save output.
+## 🧩 Configuration (config.yaml)
+Each site to scrape is defined in this YAML file:
+
+```yaml
+- name: books
+  url: https://books.toscrape.com/
+  parser: books
+  output: json
+
+- name: quotes
+  url: https://quotes.toscrape.com/
+  parser: quotes
+  output: json
+```
+name: Output file will be named output/<name>.<output>
+
+## 🚀 How to Run
+```bash
+python run_all.py
+```
+Output files are saved in the output/ folder.
+
+Each site is run sequentially with isolated settings.
+
+## 🧠 How It Works
+run_all.py loads config.yaml
+
+For each site:
+
+Sets up Scrapy settings (e.g., output format and file)
+
+Launches MasterSpider with the site config
+
+Calls the corresponding parser in parsers
+
+## ✏️ Writing a Custom Parser
+Each parser module should contain a parse(response) function that returns Scrapy Item objects or dictionaries.
+
+Example (parsers/quotes.py):
+
+```python
+def parse(response):
+    for quote in response.css("div.quote"):
+        yield {
+            "text": quote.css("span.text::text").get(),
+            "author": quote.css("small.author::text").get(),
+            "tags": quote.css("div.tags a.tag::text").getall()
+        }
+```
